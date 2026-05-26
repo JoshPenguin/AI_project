@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dental AI Web Workspace - TuringTitans</title>
+    <style>
+        /* ==========================================
+           1. CORE RESET & BASE STYLES
+           ========================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        body {
+            background-color: #eddaf2;
+            color: #181e2c;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* ==========================================
+           2. DYNAMIC GRADIENT BACKGROUND ORBS
+           ========================================== */
+        .gradient-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.4;
+        }
+
+        .orb-blue {
+            top: -10%;
+            right: 10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, #c4e0e5 0%, rgba(255,255,255,0) 70%);
+        }
+
+        .orb-peach {
+            bottom: 10%;
+            right: -5%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, #fbc2eb 0%, rgba(255,255,255,0) 70%);
+        }
+
+        /* ==========================================
+           3. APPLICATION NAVIGATION BAR
+           ========================================== */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 4rem;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        .logo-text {
+            font-size: 2rem;
+            font-weight: 300;
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            letter-spacing: -1px;
+        }
+
+        .profile-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid #e2e8f0;
+            background: #fff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #4a5568;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        }
+
+        /* ==========================================
+           4. GRID LAYOUT FRAMEWORK
+           ========================================== */
+        .hero-container {
+            display: flex;
+            max-width: 1400px;
+            margin: 3rem auto;
+            padding: 0 4rem;
+            align-items: flex-start;
+            gap: 4rem;
+        }
+
+        .hero-left {
+            flex: 1;
+            max-width: 550px;
+        }
+
+        .hero-right {
+            flex: 1.2;
+            display: flex;
+            justify-content: center;
+            align-self: center;
+        }
+
+        /* ==========================================
+           5. TYPOGRAPHY & TEXT EFFECTS
+           ========================================== */
+        .hero-title {
+            font-size: 3.2rem;
+            font-weight: 700;
+            line-height: 1.15;
+            letter-spacing: -0.5px;
+            color: #0f172a;
+            margin-bottom: 2rem;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #a78bfa, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* ==========================================
+           6. INTERACTIVE UPLOAD COMPONENT
+           ========================================== */
+        .upload-zone {
+            background: rgba(255, 255, 255, 0.7);
+            border: 2px dashed #cbd5e1;
+            border-radius: 24px;
+            padding: 2.5rem;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.02);
+            backdrop-filter: blur(8px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .upload-zone:hover, .upload-zone.drag-active {
+            border-color: #38bdf8;
+            background: rgba(240, 249, 255, 0.8);
+            transform: translateY(-2px);
+            box-shadow: 0 20px 25px -5px rgba(56, 189, 248, 0.1);
+        }
+
+        .upload-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .upload-icon {
+            width: 48px;
+            height: 48px;
+            color: #0ea5e9;
+            margin-bottom: 1rem;
+            background: #e0f2fe;
+            padding: 10px;
+            border-radius: 50%;
+        }
+
+        .upload-text {
+            font-size: 1.05rem;
+            color: #334155;
+            font-weight: 500;
+        }
+
+        .browse-link {
+            color: #0ea5e9;
+            text-decoration: underline;
+        }
+
+        .upload-subtext {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            margin-top: 0.5rem;
+        }
+
+        /* ==========================================
+           7. 3D PERSPECTIVE VISUALIZATION CANVAS
+           ========================================== */
+        .canvas-card {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            background: linear-gradient(145deg, #1f2937, #111827);
+            border-radius: 24px;
+            padding: 8px;
+            box-shadow: 0 30px 60px -15px rgba(0,0,0,0.3), 
+                        0 0 0 1px rgba(255,255,255,0.1) inset;
+            transform: perspective(1000px) rotateY(-8deg) rotateX(4deg);
+            transition: transform 0.5s ease;
+        }
+
+        .canvas-card:hover {
+            transform: perspective(1000px) rotateY(-2deg) rotateX(1deg);
+        }
+
+        .canvas-placeholder {
+            width: 100%;
+            height: 100%;
+            border-radius: 18px;
+            background: url('https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&q=80&w=800') center/cover no-repeat;
+            position: relative;
+            overflow: hidden;
+            transition: background 0.3s ease;
+        }
+
+        .glass-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(12px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            text-align: center;
+            padding: 2rem;
+            transition: opacity 0.3s ease;
+        }
+
+        .glass-overlay p {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.5px;
+        }
+
+        .glass-overlay span {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            max-width: 280px;
+        }
+
+        /* ==========================================
+           8. BUTTONS & RESULTS PANELS
+           ========================================== */
+        .analyze-btn {
+            display: none; /* hidden by default */
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            padding: 1.2rem;
+            margin-top: 1.5rem;
+            background: linear-gradient(135deg, #a78bfa, #f472b6);
+            color: white;
+            border: none;
+            border-radius: 18px;
+            font-size: 1.15rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 10px 20px -5px rgba(244, 114, 182, 0.4);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .analyze-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 25px -5px rgba(244, 114, 182, 0.6);
+        }
+
+        .analyze-btn:active {
+            transform: translateY(1px);
+        }
+
+        .analyze-btn:disabled {
+            background: #cbd5e1;
+            box-shadow: none;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .results-panel {
+            display: none; /* hidden by default */
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);
+            animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .results-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .metric-card {
+            padding: 1.2rem 0.8rem;
+            border-radius: 18px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .metric-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+        }
+
+        .metric-caries {
+            background: rgba(239, 68, 68, 0.08);
+            border: 1.5px solid rgba(239, 68, 68, 0.2);
+            color: #b91c1c;
+        }
+        
+        .metric-cavity {
+            background: rgba(168, 85, 247, 0.08);
+            border: 1.5px solid rgba(168, 85, 247, 0.2);
+            color: #7e22ce;
+        }
+
+        .metric-crack {
+            background: rgba(14, 165, 233, 0.08);
+            border: 1.5px solid rgba(14, 165, 233, 0.2);
+            color: #0369a1;
+        }
+
+        .metric-count {
+            font-size: 2.4rem;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 0.35rem;
+        }
+
+        .metric-label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            opacity: 0.85;
+        }
+
+        /* Loading Spinner & Status overlays */
+        .spinner {
+            width: 44px;
+            height: 44px;
+            border: 4px solid rgba(255, 255, 255, 0.15);
+            border-top-color: #38bdf8;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1.2rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loader-container, .status-overlay, .error-overlay {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            text-align: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        .error-icon {
+            width: 48px;
+            height: 48px;
+            color: #ef4444;
+            background: rgba(239, 68, 68, 0.15);
+            padding: 10px;
+            border-radius: 50%;
+            margin-bottom: 1rem;
+        }
+
+        .error-overlay p {
+            color: #f87171 !important;
+            font-weight: 700;
+            font-size: 1.25rem;
+            margin-bottom: 0.6rem;
+        }
+
+        .error-overlay span {
+            color: #cbd5e1 !important;
+            font-size: 0.9rem;
+            max-width: 320px;
+        }
+
+        .reupload-btn {
+            margin-top: 1.5rem;
+            padding: 0.7rem 1.5rem;
+            background: linear-gradient(135deg, #ef4444, #f87171);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
+            transition: all 0.2s;
+        }
+
+        .reupload-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 15px rgba(239, 68, 68, 0.5);
+        }
+
+        .status-card {
+            margin-top: 1.5rem;
+            padding: 1.2rem;
+            border-radius: 18px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            line-height: 1.5;
+            text-align: center;
+            display: none;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);
+            animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        .status-card-success {
+            background: rgba(16, 185, 129, 0.08);
+            border: 1.5px solid rgba(16, 185, 129, 0.25);
+            color: #065f46;
+        }
+
+        .status-card-warning {
+            background: rgba(245, 158, 11, 0.08);
+            border: 1.5px solid rgba(245, 158, 11, 0.25);
+            color: #92400e;
+        }
+
+        /* ==========================================
+           9. RESPONSIVE LAYOUT MEDIA QUERIES
+           ========================================== */
+        @media (max-width: 1024px) {
+            .hero-container {
+                flex-direction: column;
+                padding: 0 2rem;
+                margin: 2rem auto;
+                text-align: center;
+                align-items: center;
+            }
+            .navbar { padding: 1.5rem 2rem; }
+            .hero-left { max-width: 100%; width: 100%; }
+            .canvas-card { transform: none; }
+            .canvas-card:hover { transform: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="gradient-bg">
+        <div class="orb orb-blue"></div>
+        <div class="orb orb-peach"></div>
+    </div>
+
+    <header class="navbar">
+        <div class="logo">
+            <span class="logo-text">TuringTitans</span>
+        </div>
+        <nav class="nav-links">
+        </nav>
+        <div class="nav-auth">
+            <button class="profile-btn">
+                <span>JS</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="hero-container">
+        
+        <div class="hero-left">
+            <h1 class="hero-title">
+                ELEVATING CARE <br>
+                WITH DENTAL <span class="gradient-text">AI</span>
+            </h1>
+            
+            <div class="upload-zone" id="drop-zone">
+                 <form id="upload-form" enctype="multipart/form-data" style="display: none;">
+                     <input type="file" name="file" id="file-input" accept=".png,.jpg,.jpeg" hidden>
+                 </form>
+                <div class="upload-content">
+                    <svg class="upload-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 16V8M12 8L9 11M12 8L15 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M3 15V16C3 18.2091 4.79086 20 7 20H17C19.2091 20 21 18.2091 21 16V15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <p class="upload-text">Drag & drop your teeth image here, or <span class="browse-link">browse</span></p>
+                    <p class="upload-subtext">Supports PNG or JPG only</p>
+                </div>
+            </div>
+
+            <!-- "Start Analyzing" Action Button -->
+            <button id="analyze-btn" class="analyze-btn">
+                <span>Start Analyzing</span>
+                <svg viewBox="0 0 24 24" fill="none" width="20" height="20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12H19M19 12L12 5M19 12L12 19"/>
+                </svg>
+            </button>
+
+            <!-- Results Metrics Dashboard -->
+            <div id="results-panel" class="results-panel">
+                <div class="results-title">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                        <polyline points="22 4 12 14.01 9 11.01"/>
+                    </svg>
+                    <span>Dental AI Diagnostics</span>
+                </div>
+                <div class="metrics-grid">
+                    <div class="metric-card metric-caries">
+                        <div id="caries-count" class="metric-count">0</div>
+                        <div class="metric-label">Caries</div>
+                    </div>
+                    <div class="metric-card metric-cavity">
+                        <div id="cavities-count" class="metric-count">0</div>
+                        <div class="metric-label">Cavity</div>
+                    </div>
+                    <div class="metric-card metric-crack">
+                        <div id="cracks-count" class="metric-count">0</div>
+                        <div class="metric-label">Crack</div>
+                    </div>
+                </div>
+                <!-- Dynamic Status Recommendation Card -->
+                <div id="status-card" class="status-card"></div>
+            </div>
+        </div>
+
+        <div class="hero-right">
+            <div class="canvas-card">
+                <div class="canvas-placeholder" id="canvas-placeholder">
+                    <div class="glass-overlay" id="result-area">
+                        <p>No Image Uploaded</p>
+                        <span>Select or drop a PNG or JPG dental X-ray/image to preview</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+        const resultArea = document.getElementById('result-area');
+        const canvasPlaceholder = document.getElementById('canvas-placeholder');
+        const analyzeBtn = document.getElementById('analyze-btn');
+        const resultsPanel = document.getElementById('results-panel');
+        const statusCard = document.getElementById('status-card');
+        
+        // Counter Elements
+        const cariesCount = document.getElementById('caries-count');
+        const cavitiesCount = document.getElementById('cavities-count');
+        const cracksCount = document.getElementById('cracks-count');
+
+        let selectedFile = null;
+
+        // Trigger file browser on click
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        // Drag and drop event handlers
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('drag-active');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('drag-active');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('drag-active');
+
+            if (e.dataTransfer.files.length) {
+                processFile(e.dataTransfer.files[0]);
+            }
+        });
+
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files.length) {
+                processFile(fileInput.files[0]);
+            }
+        });
+
+        // Client side validation & local preview
+        function processFile(file) {
+            // Validate extension (strictly only png, jpg, jpeg)
+            const filename = file.name.toLowerCase();
+            const ext = filename.split('.').pop();
+            
+            if (ext !== 'png' && ext !== 'jpg' && ext !== 'jpeg') {
+                alert("Invalid format! Only PNG and JPG (JPEG) images are allowed.");
+                resetToDefault();
+                return;
+            }
+
+            selectedFile = file;
+
+            // Generate a local image preview
+            const objectURL = URL.createObjectURL(file);
+            canvasPlaceholder.style.background = `url('${objectURL}') center/contain no-repeat`;
+            canvasPlaceholder.style.backgroundColor = '#1f2937';
+
+            // Show interactive success state
+            resultArea.style.opacity = '1';
+            resultArea.style.background = 'rgba(15, 23, 42, 0.4)'; // darker transparent glass
+            resultArea.innerHTML = `
+                <div class="status-overlay">
+                    <p style="text-shadow: 0 2px 4px rgba(0,0,0,0.5)">Ready to Analyze</p>
+                    <span style="color:#e2e8f0; font-weight: 500;">Click "Start Analyzing" on the left to initiate the AI teeth scan</span>
+                </div>
+            `;
+
+            // Reset dashboard results
+            resultsPanel.style.display = 'none';
+            statusCard.style.display = 'none';
+
+            // Reveal and enable "Start Analyzing" button
+            analyzeBtn.style.display = 'flex';
+            analyzeBtn.disabled = false;
+            analyzeBtn.innerHTML = `
+                <span>Start Analyzing</span>
+                <svg viewBox="0 0 24 24" fill="none" width="20" height="20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12H19M19 12L12 5M19 12L12 19"/>
+                </svg>
+            `;
+        }
+
+        // Reset application back to empty default state
+        function resetToDefault() {
+            selectedFile = null;
+            fileInput.value = '';
+            
+            canvasPlaceholder.style.background = "url('https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&q=80&w=800') center/cover no-repeat";
+            canvasPlaceholder.style.backgroundColor = '';
+            
+            resultArea.style.opacity = '1';
+            resultArea.style.background = 'rgba(15, 23, 42, 0.75)';
+            resultArea.innerHTML = `
+                <p>No Image Uploaded</p>
+                <span>Select or drop a PNG or JPG dental X-ray/image to preview</span>
+            `;
+
+            analyzeBtn.style.display = 'none';
+            resultsPanel.style.display = 'none';
+            statusCard.style.display = 'none';
+        }
+
+        // Trigger predict function on button click
+        analyzeBtn.addEventListener('click', async () => {
+            if (!selectedFile) return;
+
+            // Update UI to analyzing state
+            analyzeBtn.disabled = true;
+            analyzeBtn.innerHTML = `
+                <span>Analyzing Image...</span>
+                <div class="spinner" style="width: 20px; height: 20px; border-width: 2px; margin-bottom: 0;"></div>
+            `;
+
+            resultArea.style.opacity = '1';
+            resultArea.style.background = 'rgba(15, 23, 42, 0.75)';
+            resultArea.innerHTML = `
+                <div class="loader-container">
+                    <div class="spinner"></div>
+                    <p>AI Engine Scanning...</p>
+                    <span>Detecting caries, cavity formations, and cracks. Please hold on.</span>
+                </div>
+            `;
+
+            const formData = new FormData();
+            formData.append("file", selectedFile);
+
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    throw new Error("Server responded with an error");
+                }
+
+                const data = await response.json();
+
+                if (data.error) {
+                    // Show teeth validation error / reupload prompt
+                    resultArea.style.opacity = '1';
+                    resultArea.style.background = 'rgba(15, 23, 42, 0.85)';
+                    resultArea.innerHTML = `
+                        <div class="error-overlay">
+                            <svg class="error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="8" x2="12" y2="12"></line>
+                                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                            </svg>
+                            <p>Teeth Validation Failed</p>
+                            <span>${data.error}</span>
+                            <button class="reupload-btn" onclick="fileInput.click()">Reupload Teeth Image</button>
+                        </div>
+                    `;
+                    // Hide analyze button
+                    analyzeBtn.style.display = 'none';
+                    return;
+                }
+
+                // AI scan was successful
+                // Update canvas with annotated base64 image
+                canvasPlaceholder.style.background = `url('${data.image}') center/contain no-repeat`;
+                
+                // Hide glass overlay completely so the user can inspect the bounding boxes clearly!
+                resultArea.style.opacity = '0';
+                resultArea.innerHTML = '';
+                // Set pointer-events to none so the user can hover on the canvas card without overlay blocking
+                resultArea.style.pointerEvents = 'none';
+
+                // Display metric counts with numbers
+                cariesCount.innerText = data.caries;
+                cavitiesCount.innerText = data.cavities;
+                cracksCount.innerText = data.cracks;
+
+                // Dynamically show dynamic status message based on counts
+                const totalDefects = data.caries + data.cavities + data.cracks;
+                if (totalDefects === 0) {
+                    statusCard.className = 'status-card status-card-success';
+                    statusCard.innerHTML = `
+                        <strong>🎉 Excellent news!</strong> Your teeth look healthy and strong. No caries, cavities, or cracks were detected in this analysis — nothing to worry about!
+                    `;
+                } else {
+                    statusCard.className = 'status-card status-card-warning';
+                    statusCard.innerHTML = `
+                        <strong>⚠️ Notice:</strong> We detected potential anomalies. We recommend consulting a dentist for a professional diagnosis and evaluation.
+                    `;
+                }
+                statusCard.style.display = 'block';
+
+                // Animate and reveal results panel
+                resultsPanel.style.display = 'block';
+
+                // Hide analyze button since analysis is complete
+                analyzeBtn.style.display = 'none';
+
+            } catch (err) {
+                console.error(err);
+                alert("An error occurred during analysis. Please try again.");
+                processFile(selectedFile); // restore ready-state
+            }
+        });
+    </script>
+</body>
+</html>
