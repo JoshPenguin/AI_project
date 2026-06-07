@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -49,7 +50,7 @@
             right: 10%;
             width: 600px;
             height: 600px;
-            background: radial-gradient(circle, #c4e0e5 0%, rgba(255,255,255,0) 70%);
+            background: radial-gradient(circle, #c4e0e5 0%, rgba(255, 255, 255, 0) 70%);
         }
 
         .orb-peach {
@@ -57,7 +58,7 @@
             right: -5%;
             width: 500px;
             height: 500px;
-            background: radial-gradient(circle, #fbc2eb 0%, rgba(255,255,255,0) 70%);
+            background: radial-gradient(circle, #fbc2eb 0%, rgba(255, 255, 255, 0) 70%);
         }
 
         /* ==========================================
@@ -94,7 +95,7 @@
             font-weight: 600;
             font-size: 0.85rem;
             color: #4a5568;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         }
 
         /* ==========================================
@@ -154,7 +155,8 @@
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .upload-zone:hover, .upload-zone.drag-active {
+        .upload-zone:hover,
+        .upload-zone.drag-active {
             border-color: #38bdf8;
             background: rgba(240, 249, 255, 0.8);
             transform: translateY(-2px);
@@ -203,8 +205,8 @@
             background: linear-gradient(145deg, #1f2937, #111827);
             border-radius: 24px;
             padding: 8px;
-            box-shadow: 0 30px 60px -15px rgba(0,0,0,0.3), 
-                        0 0 0 1px rgba(255,255,255,0.1) inset;
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.1) inset;
             transform: perspective(1000px) rotateY(-8deg) rotateX(4deg);
             transition: transform 0.5s ease;
         }
@@ -255,7 +257,8 @@
            8. BUTTONS & RESULTS PANELS
            ========================================== */
         .analyze-btn {
-            display: none; /* hidden by default */
+            display: none;
+            /* hidden by default */
             align-items: center;
             justify-content: center;
             gap: 12px;
@@ -290,14 +293,15 @@
         }
 
         .results-panel {
-            display: none; /* hidden by default */
+            display: none;
+            /* hidden by default */
             margin-top: 2rem;
             padding: 1.5rem;
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(10px);
             border-radius: 24px;
             border: 1px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
             animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
 
@@ -306,6 +310,7 @@
                 opacity: 0;
                 transform: translateY(20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -342,21 +347,21 @@
         }
 
         .metric-caries {
-            background: rgba(239, 68, 68, 0.08);
-            border: 1.5px solid rgba(239, 68, 68, 0.2);
-            color: #b91c1c;
+            background: rgba(3, 42, 255, 0.08);
+            border: 1.5px solid rgba(3, 42, 255, 0.3);
+            color: #032AFF;
         }
-        
+
         .metric-cavity {
-            background: rgba(168, 85, 247, 0.08);
-            border: 1.5px solid rgba(168, 85, 247, 0.2);
-            color: #7e22ce;
+            background: rgba(99, 213, 230, 0.12);
+            border: 1.5px solid rgba(99, 213, 230, 0.4);
+            color: #1B3774;
         }
 
         .metric-crack {
-            background: rgba(14, 165, 233, 0.08);
-            border: 1.5px solid rgba(14, 165, 233, 0.2);
-            color: #0369a1;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1.5px solid #000000;
+            color: #000000;
         }
 
         .metric-count {
@@ -386,10 +391,14 @@
         }
 
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            to {
+                transform: rotate(360deg);
+            }
         }
 
-        .loader-container, .status-overlay, .error-overlay {
+        .loader-container,
+        .status-overlay,
+        .error-overlay {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -477,13 +486,27 @@
                 text-align: center;
                 align-items: center;
             }
-            .navbar { padding: 1.5rem 2rem; }
-            .hero-left { max-width: 100%; width: 100%; }
-            .canvas-card { transform: none; }
-            .canvas-card:hover { transform: none; }
+
+            .navbar {
+                padding: 1.5rem 2rem;
+            }
+
+            .hero-left {
+                max-width: 100%;
+                width: 100%;
+            }
+
+            .canvas-card {
+                transform: none;
+            }
+
+            .canvas-card:hover {
+                transform: none;
+            }
         }
     </style>
 </head>
+
 <body>
 
     <div class="gradient-bg">
@@ -505,23 +528,26 @@
     </header>
 
     <main class="hero-container">
-        
+
         <div class="hero-left">
             <h1 class="hero-title">
                 ELEVATING CARE <br>
                 WITH DENTAL <span class="gradient-text">AI</span>
             </h1>
-            
+
             <div class="upload-zone" id="drop-zone">
-                 <form id="upload-form" enctype="multipart/form-data" style="display: none;">
-                     <input type="file" name="file" id="file-input" accept=".png,.jpg,.jpeg" hidden>
-                 </form>
+                <form id="upload-form" enctype="multipart/form-data" style="display: none;">
+                    <input type="file" name="file" id="file-input" accept=".png,.jpg,.jpeg" hidden>
+                </form>
                 <div class="upload-content">
                     <svg class="upload-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 16V8M12 8L9 11M12 8L15 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M3 15V16C3 18.2091 4.79086 20 7 20H17C19.2091 20 21 18.2091 21 16V15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M12 16V8M12 8L9 11M12 8L15 11" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M3 15V16C3 18.2091 4.79086 20 7 20H17C19.2091 20 21 18.2091 21 16V15"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" />
                     </svg>
-                    <p class="upload-text">Drag & drop your teeth image here, or <span class="browse-link">browse</span></p>
+                    <p class="upload-text">Drag & drop your teeth image here, or <span class="browse-link">browse</span>
+                    </p>
                     <p class="upload-subtext">Supports PNG or JPG only</p>
                 </div>
             </div>
@@ -529,17 +555,19 @@
             <!-- "Start Analyzing" Action Button -->
             <button id="analyze-btn" class="analyze-btn">
                 <span>Start Analyzing</span>
-                <svg viewBox="0 0 24 24" fill="none" width="20" height="20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M5 12H19M19 12L12 5M19 12L12 19"/>
+                <svg viewBox="0 0 24 24" fill="none" width="20" height="20" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12H19M19 12L12 5M19 12L12 19" />
                 </svg>
             </button>
 
             <!-- Results Metrics Dashboard -->
             <div id="results-panel" class="results-panel">
                 <div class="results-title">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                        <polyline points="22 4 12 14.01 9 11.01"/>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                        <polyline points="22 4 12 14.01 9 11.01" />
                     </svg>
                     <span>Dental AI Diagnostics</span>
                 </div>
@@ -582,7 +610,7 @@
         const analyzeBtn = document.getElementById('analyze-btn');
         const resultsPanel = document.getElementById('results-panel');
         const statusCard = document.getElementById('status-card');
-        
+
         // Counter Elements
         const cariesCount = document.getElementById('caries-count');
         const cavitiesCount = document.getElementById('cavities-count');
@@ -623,7 +651,7 @@
             // Validate extension (strictly only png, jpg, jpeg)
             const filename = file.name.toLowerCase();
             const ext = filename.split('.').pop();
-            
+
             if (ext !== 'png' && ext !== 'jpg' && ext !== 'jpeg') {
                 alert("Invalid format! Only PNG and JPG (JPEG) images are allowed.");
                 resetToDefault();
@@ -666,10 +694,10 @@
         function resetToDefault() {
             selectedFile = null;
             fileInput.value = '';
-            
+
             canvasPlaceholder.style.background = "url('https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&q=80&w=800') center/cover no-repeat";
             canvasPlaceholder.style.backgroundColor = '';
-            
+
             resultArea.style.opacity = '1';
             resultArea.style.background = 'rgba(15, 23, 42, 0.75)';
             resultArea.innerHTML = `
@@ -742,7 +770,7 @@
                 // AI scan was successful
                 // Update canvas with annotated base64 image
                 canvasPlaceholder.style.background = `url('${data.image}') center/contain no-repeat`;
-                
+
                 // Hide glass overlay completely so the user can inspect the bounding boxes clearly!
                 resultArea.style.opacity = '0';
                 resultArea.innerHTML = '';
@@ -783,4 +811,5 @@
         });
     </script>
 </body>
+
 </html>

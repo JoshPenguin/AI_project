@@ -11,7 +11,7 @@ from ultralytics import YOLO
 app = Flask(__name__, static_folder='.', static_url_path='')
 
 # Load YOLO model
-MODEL_PATH = "/Users/lky/Downloads/AI project/best.pt"
+MODEL_PATH = os.path.join(os.path.dirname(__file__), "best.pt")
 print(f"Loading YOLO model from {MODEL_PATH}...")
 model = YOLO(MODEL_PATH)
 print("Model loaded successfully!")
